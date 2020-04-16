@@ -80,6 +80,8 @@
             formButton.setAttribute("class","btn btn-success very-rounded shadow h-100 w-100");
             formButton.disabled = true;                   
         }).catch((error) => {
+            formButton.innerHTML = `<h1>&times</h1><br>` + errorMessage;
+            formButton.setAttribute("class","btn btn-danger very-rounded shadow h-100 w-100");
             console.error('Error:', error);
         });
         }
@@ -90,7 +92,7 @@
                 formButton.click();
             }
         });
-        b 
+        
         formButton.onclick = function () {
             
             bodyData = {
