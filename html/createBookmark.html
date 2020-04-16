@@ -78,7 +78,7 @@
         }).then((response) => response.json()).then((data) => {
             console.log('Success:', data);
             if(data.error){
-                formButton.innerHTML = `&times`;
+                formButton.innerHTML = `<h1>&times</h1><br>` + "Error: Tag already exists";
                 formButton.setAttribute("class","btn btn-danger very-rounded shadow h-100 w-100");
             } else {
                 formButton.innerHTML = `<svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
