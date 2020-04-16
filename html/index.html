@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+      .very-rounded {
+        border-radius: 2rem;
+      }
+    </style>
+    <title>Bookmark Manager</title>
+  </head>
+  <body style="font-family: 'Montserrat', sans-serif;">
+    <br><br><br><br><br><br>
+    <div class="container">
+      <div class="row align-items-center justify-content-between">
+        <h1 class="animated fadeIn">Bookmark Manager</h1>
+        <div class="btn-group">
+          <a href="/tag/create" class="btn btn-lg btn-primary very-rounded">Create new Tag</a>
+          <a href="/bookmark/create" class="btn btn-lg btn-primary very-rounded">Add new Bookmark</a>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-8">
+          <h4>My bookmarks</h4>
+          <ul class="list-group" id="bookmark-list">
+            
+          </ul>
+        </div>
+        <div class="col-md">
+          <h5>My Tags</h5>
+          <ul class="list-group" id="tag-list">
+            
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+
+    var bookmarkList = document.getElementById("bookmark-list");
+    var tagList = document.getElementById("tag-list");
+
+      //REST API FETCH
+
+    function RequestPUT(urlPUT, bodyData){
+      fetch(urlPUT, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+      }).then((response) => response.json()).then((data) => {
+          console.log('Success:', data);
+      }).catch((error) => {
+          console.error('Error:', error);
+      });
+    }
+
+    function RequestPOST(urlPOST, bodyData){
+      fetch(urlPOST, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+      }).then((response) => response.json()).then((data) => {
+          console.log('Success:', data);
+      }).catch((error) => {
+          console.error('Error:', error);
+      });
+    }
+
+  function loadBookmark(urlAPI = "/api/bookmark"){
+      fetch(urlAPI).then((response) => {
+        return response.json();
+      }).then((data) => {
+        console.log(data.data);
+        for (var i = 0; i < data.data.length; i++){
+          var li = document.createElement("a");
+          li.appendChild(document.createTextNode(data.data[i].title));
+          li.setAttribute("class", "list-group-item bg-primary text-light");
+          li.setAttribute("href", "/bookmark/id/" + data.data[i].id);
+          bookmarkList.appendChild(li);
+        }
+      });
+    }
+  loadBookmark();
+
+  function loadTags(urlAPI = "/api/tag"){
+      fetch(urlAPI).then((response) => {
+        return response.json();
+      }).then((data) => {
+        console.log(data.data);
+        for (var i = 0; i < data.data.length; i++){
+          var li = document.createElement("a");
+          li.appendChild(document.createTextNode(data.data[i].title));
+          li.setAttribute("class", "list-group-item bg-danger text-light");
+          console.log(data.data[i].id);
+          li.setAttribute("href", "/tag/id/" + data.data[i].id);
+          tagList.appendChild(li);
+        }
+      });
+    }
+    
+    loadTags();
+    </script>
+  </body>
+</html>
