@@ -80,10 +80,15 @@
             body: JSON.stringify(bodyData)
         }).then((response) => response.json()).then((data) => {
             console.log('Success:', data);
-            formButton.innerHTML = `<svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            if(data.error){
+                formButton.innerHTML = `<h1>&times</h1><br>`;
+                formButton.setAttribute("class","btn btn-danger very-rounded shadow h-100 w-100");
+            } else {
+                formButton.innerHTML = `<svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
                                     </svg>`;
-            formButton.setAttribute("class","btn btn-success very-rounded shadow h-100 w-100");
+                formButton.setAttribute("class","btn btn-success very-rounded shadow h-100 w-100");
+            }
             formButton.disabled = true;                   
         }).catch((error) => {
             console.error('Error:', error);
