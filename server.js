@@ -51,9 +51,30 @@ app.get("/api", (req, res, next) => {
 });
 
 //Bookmarks Endpoints
-app.get("/api/bookmark", (req, res, next) => {
+
+/*app.get("/api/bookmark", (req, res, next) => {
     var sql = "select * from bookmark"
     var params = []
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+          res.status(400).json({"error":err.message});
+          return;
+        }
+        res.json({
+            "message":"success",
+            "data":rows
+        })
+      });
+});*/
+app.get("/api/bookmark", (req, res, next) => {
+    res.redirect("/api/bookmark/page/1")
+});
+
+app.get("/api/bookmark/page/:id", (req, res, next) =>{
+    var sql = "select * from bookmark LIMIT ? OFFSET ?"
+    var pageLimit = 2
+    var pageOffset = (req.params.id - 1) * 2
+    var params = [pageLimit,pageOffset]
     db.all(sql, params, (err, rows) => {
         if (err) {
           res.status(400).json({"error":err.message});
@@ -155,8 +176,14 @@ app.delete('/api/bookmark/id/:id', function (req, res) {
 
 //Tags Endpoints
 app.get("/api/tag", (req, res, next) => {
-    var sql = "select * from tag"
-    var params = []
+    res.redirect("/api/tag/page/1")
+});
+
+app.get("/api/tag/page/:id", (req, res, next) =>{
+    var sql = "select * from tag LIMIT ? OFFSET ?"
+    var pageLimit = 2
+    var pageOffset = (req.params.id - 1) * 2
+    var params = [pageLimit,pageOffset]
     db.all(sql, params, (err, rows) => {
         if (err) {
           res.status(400).json({"error":err.message});
